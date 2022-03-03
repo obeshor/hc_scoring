@@ -1,0 +1,29 @@
+{
+  "VERSION": "1",
+  "PATH": ".",
+  "INPUT_PATH": "../../../data/",
+  "DATA_PATH": "data/",
+  "GRAPH_PATH": "./Graphes/",
+  "FILE_LIST": ["application_train", "application_test", "bureau", "bureau_balance", "credit_card_balance", "installments_payments", "POS_CASH_balance", "previous_application"],
+  "PROCESSED_DATA": "data_pc_fix.csv",
+  "SAMPLE_SIZE": 5000,
+  "CV": 5,
+  "SERIALIZED_MODEL": "bp_trained_model.joblib",
+  "THRESHOLD": 0.4529,
+  "LGBM_GRID_PARAMETERS": {
+	"model__n_estimators": [1000, 1500],
+	"model__learning_rate": [0.01],
+	"model__max_depth": [2, 3]
+	},
+  "SMOTE_GRID_PARAMETERS": {
+	"over__sampling_strategy": [0.1, 0.2],
+	"under__sampling_strategy": [0.6, 0.7]
+	},
+  "GRID_PARAMETERS": {
+	"model__n_estimators": [1000, 1500, 2000],
+	"model__learning_rate": [0.01, 0.02],
+	"model__max_depth": [2, 3],
+	"over__sampling_strategy": [0.1, 0.2],
+	"under__sampling_strategy": [0.6, 0.7]
+	}
+}
