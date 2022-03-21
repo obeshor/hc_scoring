@@ -1,1 +1,1 @@
-Prediction of credit risk from https://www.kaggle.com/c/home-credit-default-risk/data
+Flask server

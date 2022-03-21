@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "hc_scoring"
+name = "hc_scoring2"
 version = "0.1.0"
-description = "Dash/Flask application"
+description = "Flask application"
 readme = "README.md"
 ]
 

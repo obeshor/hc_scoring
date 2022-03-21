@@ -1,0 +1,17 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="card">
+  <img src="{{ url_for('static', filename='img/logo.png') }}" class="logo" />
+  <h1 class="site-title">{{ title }}</h1>
+  <p class="subtitle">Interactive dashboard on customer scoring</p>
+  <form action="{{ url_for('predict')}}" method="post">
+    <div >
+		<p>Client ID
+			<input name="client_id" required="required">
+		<button type="submit" style="background-color: #7C8FA0;display: inline-block;font-size: 16px;">Score</button>
+		</p>
+	</div>
+  </form>	
+</div>
+{% endblock %}
