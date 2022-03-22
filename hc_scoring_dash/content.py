@@ -44,7 +44,7 @@ content = html.Div(children=[
                                                 html.Div(id='credit-amount', style=CELL_STYLE)
                                               ], style=GRID_STYLE),
                             html.Div(children=[
-                                                html.Label("Echéance", style=CELL_TITLE_STYLE),
+                                                html.Label("Echéances", style=CELL_TITLE_STYLE),
                                                 html.Div(id='annuity-amount', style=CELL_STYLE)
                                               ], style=GRID_STYLE),
                             html.Div(children=[
@@ -89,3 +89,17 @@ content = html.Div(children=[
                         ])], color="primary", type="border"),
                     ], style={"width":"100%"}),
                 ], style=CONTENT_STYLE)
+                
+                
+def scale_color_shap_value(val):
+    if val > 0.7:
+        style = {'padding' : '4px', 'text-align' : 'right', 'background-color': 'Crimson'}
+    elif val > 0.1:
+        style = {'padding' : '4px', 'text-align' : 'right', 'background-color': 'Tomato'}
+    elif val < -0.7:
+        style = {'padding' : '4px', 'text-align' : 'right', 'background-color': 'MediumSpringGreen'}
+    elif val < -0.1:
+        style = {'padding' : '4px', 'text-align' : 'right', 'background-color': '#00FAAA'}
+    else:
+        style = {'padding' : '4px', 'text-align' : 'right'}
+    return style

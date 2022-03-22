@@ -1,5 +1,15 @@
 import pandas as pd
 from flask import current_app as app
+import shap
+
+def drop_columns(df, columns):
+    new_df = pd.DataFrame()
+    for col in columns:
+        if col in df.columns:
+            new_df[col] = df[col]
+        else:
+            new_df[col] = 0
+    return new_df
 
 def classification(df, model, threshold):
     X = model[:-3].transform(df.drop('SK_ID_CURR', axis=1))
@@ -20,3 +30,7 @@ def exact_value(df, feature, client_id):
         return 0
     else:
         return list(df[mask][feature])[0]
+
+def shap_values(explainer, df, ind, target):
+    shap_values = explainer.shap_values(df[ind].reshape(1,-1))
+    return shap_values[target].flatten()

@@ -1,21 +1,13 @@
 import dash
 from dash import dcc, html, Input, Output
-from dash.dash_table import DataTable, FormatTemplate
 import pandas as pd
 import requests
 import locale
 from babel import numbers
 from .sidebar import sidebar
-from .content import content
+from .content import content, scale_color_shap_value
 
 threshhold = 0.3771
-
-df_total = pd.read_csv("data/data_test.csv")
-main_columns = ['EXT_SOURCE_3', 'EXT_SOURCE_2', 'PAYMENT_RATE', 'DAYS_BIRTH', 'IS_FEMALE', 'AMT_ANNUITY',
-                'APPROVED_CNT_PAYMENT_MEAN', 'DAYS_ID_PUBLISH', 'AMT_CREDIT', 'INSTAL_AMT_PAYMENT_SUM']
-df = df_total.loc[:, main_columns]
-
-
 
 locale.setlocale(locale.LC_NUMERIC, "fr_FR")
 external_scripts = ["https://cdn.plot.ly/plotly-locale-fr-latest.js"]
@@ -27,7 +19,6 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets, external_sc
 app.layout = html.Div(children=[sidebar,
                                 content,
                                 ])
-
 
 
 @app.callback(
@@ -145,7 +136,102 @@ def update_days_birth_value_div(input_value):
     json_response = response.json()
     val = numbers.format_decimal(json_response['value'] / -365.25, locale='fr_FR') + " ans"
     return val
-    
+
+
+@app.callback(
+    Output(component_id='cust-credit-amount', component_property='style'),
+    Input(component_id='client-id', component_property='value')
+)
+def color_cust_credit_amount_div(input_value):
+    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/AMT_CREDIT")
+    if response.status_code == 404:
+        return "Not found"
+    json_response = response.json()
+    shap_value = json_response['shap_value']
+    try:
+        return scale_color_shap_value(shap_value)
+    except Exception:
+        return {'padding' : '4px', 'text-align' : 'right'}
+
+@app.callback(
+    Output(component_id='cust-annuity-amount', component_property='style'),
+    Input(component_id='client-id', component_property='value')
+)
+def color_cust_annuity_amount_div(input_value):
+    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/AMT_ANNUITY")
+    if response.status_code == 404:
+        return "Not found"
+    json_response = response.json()
+    shap_value = json_response['shap_value']
+    try:
+        return scale_color_shap_value(shap_value)
+    except Exception:
+        return {'padding' : '4px', 'text-align' : 'right'}
+
+@app.callback(
+    Output(component_id='cust-extsource2-value', component_property='style'),
+    Input(component_id='client-id', component_property='value')
+)
+def color_cust_extsource2_value_div(input_value):
+    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/EXT_SOURCE_2")
+    if response.status_code == 404:
+        return "Not found"
+    json_response = response.json()
+    shap_value = json_response['shap_value']
+    try:
+        return scale_color_shap_value(shap_value)
+    except Exception:
+        return {'padding' : '4px', 'text-align' : 'right'}
+        
+@app.callback(
+    Output(component_id='cust-extsource3-value', component_property='style'),
+    Input(component_id='client-id', component_property='value')
+)
+def color_cust_extsource3_value_div(input_value):
+    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/EXT_SOURCE_3")
+    if response.status_code == 404:
+        return "Not found"
+    json_response = response.json()
+    shap_value = json_response['shap_value']
+    try:
+        return scale_color_shap_value(shap_value)
+    except Exception:
+        return {'padding' : '4px', 'text-align' : 'right'}
+
+@app.callback(
+    Output(component_id='cust-payment-rate-value', component_property='style'),
+    Input(component_id='client-id', component_property='value')
+)
+def color_cust_payment_rate_value_div(input_value):
+    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/PAYMENT_RATE")
+    if response.status_code == 404:
+        return "Not found"
+    json_response = response.json()
+    shap_value = json_response['shap_value']
+    try:
+        return scale_color_shap_value(shap_value)
+    except Exception:
+        return {'padding' : '4px', 'text-align' : 'right'}
+
+@app.callback(
+    Output(component_id='cust-days-birth-value', component_property='style'),
+    Input(component_id='client-id', component_property='value')
+)
+def color_cust_days_birth_value_div(input_value):
+    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/DAYS_BIRTH")
+    if response.status_code == 404:
+        return "Not found"
+    json_response = response.json()
+    shap_value = json_response['shap_value']
+    try:
+        return scale_color_shap_value(shap_value)
+    except Exception:
+        return {'padding' : '4px', 'text-align' : 'right'}
+
+
+
+
+
 @app.callback(
     Output(component_id='cust-credit-amount', component_property='children'),
     Input(component_id='client-id', component_property='value')
