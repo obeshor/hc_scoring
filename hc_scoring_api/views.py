@@ -21,6 +21,11 @@ explainer = shap.TreeExplainer(model["model"])
 def home():
     return str(do.average_value(df, y, "EXT_SOURCE_3", 1))
 
+@app.route("/axis/<string:ax1>/<string:ax2>")
+def subset(ax1: str, ax2: str):
+    df_sub = pd.concat([df[["SK_ID_CURR", ax1, ax2]], pd.Series(y, name="Résultat").map({0: 'Sans risque', 1: 'Risque'})], axis=1)
+    return jsonify(df_sub.to_dict())
+
 @app.route("/average/<string:feature_name>/<int:target>")
 def average(feature_name: str, target: int):
     return jsonify({"aggregation" : "average", "feature" : feature_name, "target" : target, "value" : do.average_value(df, y, feature_name, target)})

@@ -6,6 +6,7 @@ import locale
 from babel import numbers
 from .sidebar import sidebar
 from .content import content, scale_color_shap_value
+import plotly.express as px
 
 threshhold = 0.3771
 
@@ -13,8 +14,6 @@ locale.setlocale(locale.LC_NUMERIC, "fr_FR")
 external_scripts = ["https://cdn.plot.ly/plotly-locale-fr-latest.js"]
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets, external_scripts=external_scripts)
-
-
 
 app.layout = html.Div(children=[sidebar,
                                 content,
@@ -306,3 +305,20 @@ def update_cust_days_birth_value_div(input_value):
     json_response = response.json()    
     val = numbers.format_decimal(json_response['value'] / -365.25, locale='fr_FR') + " ans"
     return val
+
+
+@app.callback(
+    Output(component_id='scatter-plot', component_property='figure'),
+    Input(component_id='filter-axis1', component_property='value'),
+    Input(component_id='filter-axis2', component_property='value'),
+    Input(component_id='client-id', component_property='value')
+)
+def update_graph_axes(axis1, axis2, client_id):
+    response = requests.request("GET", "http://localhost:5000/axis/"+str(axis1)+"/"+str(axis2))
+    if response.status_code == 404:
+        return "Not found"
+    json_response = response.json() 
+    df = pd.DataFrame(json_response)
+    fig = px.scatter(df, x=axis1, y=axis2, color="Résultat")
+    fig.add_traces(px.scatter(df[df.SK_ID_CURR == int(client_id)], x=axis1, y=axis2).update_traces(marker_size=20, marker_color="yellow").data)
+    return fig

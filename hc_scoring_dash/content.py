@@ -1,5 +1,6 @@
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
+import plotly.express as px
 
 CONTENT_STYLE = {
     "margin-left": "34rem",
@@ -88,6 +89,38 @@ content = html.Div(children=[
                                               ], style=GRID_STYLE),
                         ])], color="primary", type="border"),
                     ], style={"width":"100%"}),
+                    dbc.Spinner([
+                        dcc.Graph(id='scatter-plot'),
+                        html.Div(children=[
+                            html.Div(children=[
+                                    html.Label("Axe 1", style={"text-align": "center", "background-color": "SlateGrey", "color": "white", "width": "300px", "margin-left": "4px", "margin-right": "4px"}),
+                                    dcc.Dropdown(
+                                        options=[
+                                            {'label': 'Score source 3', 'value': 'EXT_SOURCE_3'},
+                                            {'label': 'Score source 2', 'value': 'EXT_SOURCE_2'},
+                                            {'label': 'PAYMENT_RATE', 'value': 'PAYMENT_RATE'},
+                                            {'label': 'DAYS_BIRTH', 'value': 'DAYS_BIRTH'},
+                                            {'label': 'Echéances', 'value': 'AMT_ANNUITY'},
+                                            {'label': 'Montant du prêt', 'value': 'AMT_CREDIT'},
+                                        ], value='AMT_ANNUITY',
+                                        id='filter-axis1', style={"display": "inline-block", "width": "300px"})
+                                    ], style={"display": "inline-block"}),
+                            html.Div(children=[
+                                    html.Label("Axe 2", style={"text-align": "center", "background-color": "SlateGrey", "color": "white", "width": "300px", "margin-left": "4px", "margin-right": "4px"}),
+                                    dcc.Dropdown(
+                                        options=[
+                                            {'label': 'Score source 3', 'value': 'EXT_SOURCE_3'},
+                                            {'label': 'Score source 2', 'value': 'EXT_SOURCE_2'},
+                                            {'label': 'PAYMENT_RATE', 'value': 'PAYMENT_RATE'},
+                                            {'label': 'DAYS_BIRTH', 'value': 'DAYS_BIRTH'},
+                                            {'label': 'Echéances', 'value': 'AMT_ANNUITY'},
+                                            {'label': 'Montant du prêt', 'value': 'AMT_CREDIT'},
+                                        ], value='AMT_CREDIT',
+                                        id='filter-axis2', style={"display": "inline-block", "width": "300px"})
+                                    ], style={"display": "inline-block"})
+                                ], style={"text-align": "center"}
+                            ),
+                        ], color="primary", type="border")
                 ], style=CONTENT_STYLE)
                 
                 
