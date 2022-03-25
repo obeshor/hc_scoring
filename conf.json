@@ -3,12 +3,12 @@
   "PATH": ".",
   "INPUT_PATH": "../../../data/",
   "DATA_PATH": "data/",
-  "GRAPH_PATH": "./Graphes/",
   "FILE_LIST": ["application_train", "application_test", "bureau", "bureau_balance", "credit_card_balance", "installments_payments", "POS_CASH_balance", "previous_application"],
   "TEST_DATA": "data/data_test.csv",
   "SAMPLE_SIZE": 5000,
   "CV": 5,
   "SERIALIZED_MODEL": "model/trained_model.joblib",
+  "COLUMNS_MODEL": "model/columns.joblib",
   "THRESHOLD": 0.3771,
   "LGBM_GRID_PARAMETERS": {
 	"model__n_estimators": [1000, 1500],

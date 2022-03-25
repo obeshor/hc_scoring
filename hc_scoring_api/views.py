@@ -10,7 +10,7 @@ app.config.from_json("../conf.json")
 
 df = pd.read_csv(app.config.get("TEST_DATA"))
 model = joblib.load(app.config.get("SERIALIZED_MODEL"))
-columns = joblib.load("model/columns.joblib")
+columns = joblib.load(app.config.get("COLUMNS_MODEL"))
 df = do.drop_columns(df, ['SK_ID_CURR'] + columns)
 y = do.classification(df, model, app.config.get("THRESHOLD"))
 df_transformed = model[:-3].transform(df.drop('SK_ID_CURR', axis=1))
@@ -23,7 +23,12 @@ def home():
 
 @app.route("/axis/<string:ax1>/<string:ax2>")
 def subset(ax1: str, ax2: str):
-    df_sub = pd.concat([df[["SK_ID_CURR", ax1, ax2]], pd.Series(y, name="Résultat").map({0: 'Sans risque', 1: 'Risque'})], axis=1)
+    df_sub = pd.concat([df[["SK_ID_CURR", ax1, ax2]], pd.Series(y, name="Résultat").map({0: 'Prêt accepté', 1: 'Prêt refusé'})], axis=1)
+    return jsonify(df_sub.to_dict())
+    
+@app.route("/feature/<string:feat>/<int:target>")
+def count_feature(feat: str, target: int):
+    df_sub = do.all_values(df, y, feat, target).value_counts(normalize=True)
     return jsonify(df_sub.to_dict())
 
 @app.route("/average/<string:feature_name>/<int:target>")
@@ -34,17 +39,6 @@ def average(feature_name: str, target: int):
 def client_value(feature_name: str, client_id: int):
     return jsonify({"aggregation" : "exact_value", "feature" : feature_name, "value" : do.exact_value(df, feature_name, client_id)})
     
-@app.route('/predict', methods=['POST'])
-def predict():
-    if request.method == 'POST':
-        client_id = request.form['client_id']
-    model = joblib.load(app.config.get("SERIALIZED_MODEL"))
-    df = pd.read_csv(app.config.get("TEST_DATA"))
-    X = df[df.SK_ID_CURR == int(client_id)]
-    X = model[:-3].transform(X.drop('SK_ID_CURR', axis=1))
-    prob = model["model"].predict_proba(X)[:, 1]
-    return jsonify({"client_id" : client_id, "score" : prob[0]})
-
 @app.route('/prediction/<string:client_id>')
 def prediction(client_id: str):
     try:
@@ -68,27 +62,23 @@ def prediction(client_id: str):
     
     return jsonify({"client_id" : client_id, "score" : prob[0]})
 
-@app.route('/verification/<string:client_id>')
-def verification(client_id: str):
-    model = joblib.load(app.config.get("SERIALIZED_MODEL"))
-    df = pd.read_csv("data/data_500.csv")
-    X = df[df.SK_ID_CURR == int(client_id)]
-    target = X.TARGET.values[0]
-    X = model[:-3].transform(X.drop(['SK_ID_CURR', 'TARGET'], axis=1))
-    prob = model["model"].predict_proba(X)[:, 1]
-    return jsonify({"client_id" : client_id, "score" : prob[0], "target" : str(target)})
-
 @app.route("/explain/<string:client_id>")
 def explain(client_id: str):
-    d = dict()
-    ind = df[df.SK_ID_CURR == int(client_id)].index[0]
-    values = do.shap_values(explainer, df_transformed, ind, 1)
-    for index, row in fi.sort_values('IMPORTANCE', ascending=False)[:10].iterrows():
-        d[row.FEATURE_NAME] = values[index]
-    return jsonify(d)
+    if int(client_id) in df.SK_ID_CURR.values:
+        d = dict()
+        ind = df[df.SK_ID_CURR == int(client_id)].index[0]
+        values = do.shap_values(explainer, df_transformed, ind, 1)
+        for index, row in fi.sort_values('IMPORTANCE', ascending=False)[:10].iterrows():
+            d[row.FEATURE_NAME] = values[index]
+        return jsonify(d)
+    else:
+        abort(404)
     
 @app.route("/explain/<string:client_id>/<string:feature_name>")
 def explain_feature(client_id: str, feature_name: str):
-    ind = df[df.SK_ID_CURR == int(client_id)].index[0]
-    values = do.shap_values(explainer, df_transformed, ind, 1)
-    return jsonify({"client_id" : client_id, "feature" : feature_name, "shap_value" : values[fi[fi.FEATURE_NAME == feature_name].index[0]]})
+    if int(client_id) in df.SK_ID_CURR.values:
+        ind = df[df.SK_ID_CURR == int(client_id)].index[0]
+        values = do.shap_values(explainer, df_transformed, ind, 1)
+        return jsonify({"client_id" : client_id, "feature" : feature_name, "shap_value" : values[fi[fi.FEATURE_NAME == feature_name].index[0]]})
+    else:
+        abort(404)

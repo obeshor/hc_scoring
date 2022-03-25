@@ -24,6 +24,12 @@ def average_value(df, y, feature, target):
         val = df[feature].mean()
     return val
     
+def all_values(df, y, feature, target):
+    if target in [0, 1]:
+        return df[y == target][feature]
+    else:
+        return df[feature]
+
 def exact_value(df, feature, client_id):
     mask = df.SK_ID_CURR == client_id
     if df[mask].size == 0:
