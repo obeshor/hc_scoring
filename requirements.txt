@@ -156,7 +156,6 @@ sortedcollections==1.2.1
 sortedcontainers==2.2.2
 soupsieve==2.0.1
 sympy==1.6.1
-tables==3.6.1
 tblib==1.6.0
 tenacity==8.0.1
 termcolor==1.1.0
