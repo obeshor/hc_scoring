@@ -19,7 +19,7 @@ explainer = shap.TreeExplainer(model["model"])
 
 @app.route("/")
 def home():
-    return str(do.average_value(df, y, "EXT_SOURCE_3", 1))
+    return str("Home page")
 
 @app.route("/axis/<string:ax1>/<string:ax2>")
 def subset(ax1: str, ax2: str):
