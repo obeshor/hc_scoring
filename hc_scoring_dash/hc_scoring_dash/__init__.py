@@ -16,6 +16,7 @@ API_ADDRESS = "https://hc-scoring-api.herokuapp.com/"
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 #app = dash.Dash(__name__, external_stylesheets=external_stylesheets, external_scripts=external_scripts)
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server=app.server
 app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div(children=[sidebar,
