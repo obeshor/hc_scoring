@@ -1,1 +1,1 @@
-web: gunicorn hc_scoring_dash:app
+web: gunicorn hc_scoring_dash:server
