@@ -2,13 +2,14 @@ import pandas as pd
 from flask import current_app as app
 import shap
 
-def drop_columns(df, columns):
-    new_df = pd.DataFrame()
-    for col in columns:
-        if col in df.columns:
-            new_df[col] = df[col]
-        else:
-            new_df[col] = 0
+def keep_columns(df, columns):
+    existing_columns = set(list(df.columns))
+    tokeep_columns = set(columns)
+    todelete_columns = existing_columns - tokeep_columns
+    toadd_columns = tokeep_columns - existing_columns
+    new_df = df.drop(list(todelete_columns), axis=1, errors='ignore')
+    for col in list(toadd_columns):
+        new_df[col] = 0
     return new_df
 
 def classification(df, model, threshold):
