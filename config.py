@@ -18,3 +18,8 @@ class Config:
     STATIC_FOLDER = "static"
     TEMPLATES_FOLDER = "templates"
     COMPRESSOR_DEBUG = environ.get("COMPRESSOR_DEBUG")
+    
+    if FLASK_ENV == "dev":
+        API_ADDRESS = "http://localhost:5000"
+    else:
+        API_ADDRESS = "https://hc-scoring-api.herokuapp.com/"
