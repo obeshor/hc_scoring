@@ -11,10 +11,11 @@ import plotly.express as px
 threshhold = 0.3771
 API_ADDRESS = "https://hc-scoring-api.herokuapp.com/"
 
-locale.setlocale(locale.LC_NUMERIC, "fr_FR")
-external_scripts = ["https://cdn.plot.ly/plotly-locale-fr-latest.js"]
+#locale.setlocale(locale.LC_NUMERIC, "fr_FR")
+#external_scripts = ["https://cdn.plot.ly/plotly-locale-fr-latest.js"]
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets, external_scripts=external_scripts)
+#app = dash.Dash(__name__, external_stylesheets=external_stylesheets, external_scripts=external_scripts)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div(children=[sidebar,
