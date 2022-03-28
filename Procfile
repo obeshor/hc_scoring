@@ -1,1 +1,0 @@
-web: gunicorn hc_scoring_api:app
