@@ -9,6 +9,7 @@ from .content import content, scale_color_shap_value
 import plotly.express as px
 
 threshhold = 0.3771
+API_ADDRESS = "https://hc-scoring-api.herokuapp.com/"
 
 locale.setlocale(locale.LC_NUMERIC, "fr_FR")
 external_scripts = ["https://cdn.plot.ly/plotly-locale-fr-latest.js"]
@@ -27,7 +28,7 @@ app.layout = html.Div(children=[sidebar,
     Input(component_id='client-id', component_property='value')
 )
 def update_score_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/prediction/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/prediction/"+str(input_value))
     if response.status_code == 404:
         return ("Not found", "Not found")
     json_response = response.json()    
@@ -87,7 +88,7 @@ def update_outcome_div(input_value):
     Input(component_id='filter-risk', component_property='value')
 )
 def update_credit_amount_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/average/AMT_CREDIT/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/average/AMT_CREDIT/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()
@@ -100,7 +101,7 @@ def update_credit_amount_div(input_value):
     Input(component_id='filter-risk', component_property='value')
 )
 def update_annuity_amount_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/average/AMT_ANNUITY/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/average/AMT_ANNUITY/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -112,7 +113,7 @@ def update_annuity_amount_div(input_value):
     Input(component_id='filter-risk', component_property='value')
 )
 def update_extsource3_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/average/EXT_SOURCE_3/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/average/EXT_SOURCE_3/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -124,7 +125,7 @@ def update_extsource3_value_div(input_value):
     Input(component_id='filter-risk', component_property='value')
 )
 def update_extsource2_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/average/EXT_SOURCE_2/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/average/EXT_SOURCE_2/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -136,7 +137,7 @@ def update_extsource2_value_div(input_value):
     Input(component_id='filter-risk', component_property='value')
 )
 def update_payment_rate_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/average/PAYMENT_RATE/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/average/PAYMENT_RATE/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -148,7 +149,7 @@ def update_payment_rate_value_div(input_value):
     Input(component_id='filter-risk', component_property='value')
 )
 def update_days_birth_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/average/DAYS_BIRTH/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/average/DAYS_BIRTH/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()
@@ -161,7 +162,7 @@ def update_days_birth_value_div(input_value):
     Input(component_id='filter-risk', component_property='value')
 )
 def update_sex_category_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/feature/IS_FEMALE/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/feature/IS_FEMALE/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()
@@ -175,7 +176,7 @@ def update_sex_category_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def color_cust_credit_amount_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/AMT_CREDIT")
+    response = requests.request("GET", API_ADDRESS+"/explain/"+str(input_value)+"/AMT_CREDIT")
     if response.status_code == 404:
         return {'padding' : '4px', 'text-align' : 'right'}
     json_response = response.json()
@@ -190,7 +191,7 @@ def color_cust_credit_amount_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def color_cust_annuity_amount_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/AMT_ANNUITY")
+    response = requests.request("GET", API_ADDRESS+"/explain/"+str(input_value)+"/AMT_ANNUITY")
     if response.status_code == 404:
         return {'padding' : '4px', 'text-align' : 'right'}
     json_response = response.json()
@@ -205,7 +206,7 @@ def color_cust_annuity_amount_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def color_cust_extsource2_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/EXT_SOURCE_2")
+    response = requests.request("GET", API_ADDRESS+"/explain/"+str(input_value)+"/EXT_SOURCE_2")
     if response.status_code == 404:
         return {'padding' : '4px', 'text-align' : 'right'}
     json_response = response.json()
@@ -220,7 +221,7 @@ def color_cust_extsource2_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def color_cust_extsource3_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/EXT_SOURCE_3")
+    response = requests.request("GET", API_ADDRESS+"/explain/"+str(input_value)+"/EXT_SOURCE_3")
     if response.status_code == 404:
         return {'padding' : '4px', 'text-align' : 'right'}
     json_response = response.json()
@@ -235,7 +236,7 @@ def color_cust_extsource3_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def color_cust_payment_rate_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/PAYMENT_RATE")
+    response = requests.request("GET", API_ADDRESS+"/explain/"+str(input_value)+"/PAYMENT_RATE")
     if response.status_code == 404:
         return {'padding' : '4px', 'text-align' : 'right'}
     json_response = response.json()
@@ -250,7 +251,7 @@ def color_cust_payment_rate_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def color_cust_days_birth_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/DAYS_BIRTH")
+    response = requests.request("GET", API_ADDRESS+"/explain/"+str(input_value)+"/DAYS_BIRTH")
     if response.status_code == 404:
         return {'padding' : '4px', 'text-align' : 'right'}
     json_response = response.json()
@@ -265,7 +266,7 @@ def color_cust_days_birth_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def color_cust_sex_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/explain/"+str(input_value)+"/IS_FEMALE")
+    response = requests.request("GET", API_ADDRESS+"/explain/"+str(input_value)+"/IS_FEMALE")
     if response.status_code == 404:
         return {'padding' : '4px', 'text-align' : 'right'}
     json_response = response.json()
@@ -284,7 +285,7 @@ def color_cust_sex_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_cust_credit_amount_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/value/AMT_CREDIT/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/value/AMT_CREDIT/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()
@@ -296,7 +297,7 @@ def update_cust_credit_amount_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_cust_annuity_amount_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/value/AMT_ANNUITY/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/value/AMT_ANNUITY/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -308,7 +309,7 @@ def update_cust_annuity_amount_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_cust_extsource3_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/value/EXT_SOURCE_3/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/value/EXT_SOURCE_3/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -320,7 +321,7 @@ def update_cust_extsource3_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_cust_extsource2_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/value/EXT_SOURCE_2/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/value/EXT_SOURCE_2/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -332,7 +333,7 @@ def update_cust_extsource2_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_cust_payment_rate_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/value/PAYMENT_RATE/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/value/PAYMENT_RATE/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()
@@ -347,7 +348,7 @@ def update_cust_payment_rate_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_cust_days_birth_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/value/DAYS_BIRTH/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/value/DAYS_BIRTH/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()    
@@ -359,7 +360,7 @@ def update_cust_days_birth_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_cust_sex_value_div(input_value):
-    response = requests.request("GET", "http://localhost:5000/value/IS_FEMALE/"+str(input_value))
+    response = requests.request("GET", API_ADDRESS+"/value/IS_FEMALE/"+str(input_value))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json()
@@ -377,7 +378,7 @@ def update_cust_sex_value_div(input_value):
     Input(component_id='client-id', component_property='value')
 )
 def update_graph_axes(axis1, axis2, client_id):
-    response = requests.request("GET", "http://localhost:5000/axis/"+str(axis1)+"/"+str(axis2))
+    response = requests.request("GET", API_ADDRESS+"/axis/"+str(axis1)+"/"+str(axis2))
     if response.status_code == 404:
         return "Not found"
     json_response = response.json() 
