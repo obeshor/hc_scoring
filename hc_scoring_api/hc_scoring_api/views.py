@@ -5,7 +5,7 @@ import pandas as pd
 from imblearn.pipeline import Pipeline, make_pipeline
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
-import hc_scoring_api.data_operations as do
+import .data_operations as do
 
 app = Flask(__name__)
 app.config.from_object("config.Config")
