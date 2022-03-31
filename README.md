@@ -12,9 +12,9 @@ Application based on Kaggle's Home Credit Default Risk competition.
 	- most important features of the final model  
 	- threshold selection to minimize cost  
 	
-## hc_scoring_api  
+# hc_scoring_api  
 data and results from the trained model  
 
-## hc_scoring_dash  
+# hc_scoring_dash  
 Dashboard gathering information from API  
 to know whether a loan application is accepted or not
